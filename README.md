@@ -22,7 +22,7 @@ go run main.go
 
 ***
 ### - Frameworks&Drivers
- - infrasturecture/
+ - infrastructure/
    - client
    - injector
    - persistence
