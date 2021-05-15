@@ -24,7 +24,7 @@ go run main.go
 ### - Frameworks&Drivers
  - infrasturecture/
    - client
-   - injecter
+   - injector
    - persistence
    - router
 ### - Interface Adapters
