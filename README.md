@@ -15,6 +15,8 @@ docker-compose up -d
 go run main.go
 
 ※ginでサーバが起動します
+
+
 ```
 
 
@@ -33,7 +35,7 @@ go run main.go
 - domain/
   - repository
 ### - Application Business Rules
-- usecasses/
+- usecases/
 ### - Enterprise Business Rules
 - domain/
   - model
