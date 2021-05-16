@@ -16,8 +16,11 @@ func NewMemberRepository(m MemberHandler) repository.MemberRepository {
 
 func (m *memberRepository) FindAll() ([]model.Member, error) {
 	rec, err := m.h.FindAll()
+	if len(rec) < 1 {
+		return nil, model.NewApiError(uint(model.MemberNotFound), xerrors.New("Member Not Found"))
+	}
 	if err != nil {
-		xerrors.Errorf("failed to FindAll(): %w", err)
+		return nil, xerrors.Errorf("failed to FindAll(): %w", err)
 	}
 	return rec.MakeMembers(), nil
 }

@@ -1,0 +1,45 @@
+definitions:
+  response.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  response.MemberResponse:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: sample-clean-architecture OpenAPI
+  license:
+    name: kmmr
+  termsOfService: none
+  title: sample-clean-architecture API
+  version: "1.0"
+paths:
+  /v1/members:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.MemberResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: 会員情報一覧をリストで返す
+      tags:
+      - member
+swagger: "2.0"

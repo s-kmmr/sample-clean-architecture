@@ -3,8 +3,8 @@ package response
 import "github.com/s-kmmr/sample-clean-architecture/domain/model"
 
 type MemberResponse struct {
-	LastName  string
-	FirstName string
+	LastName  string `json:"last_name"`
+	FirstName string `json:"first_name"`
 }
 
 func NewMemberResponses(m []model.Member) []MemberResponse {
