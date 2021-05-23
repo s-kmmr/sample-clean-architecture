@@ -19,6 +19,7 @@ func NewSqlHandler() *SqlHandler {
 	if err != nil {
 		panic(err.Error())
 	}
+	db = db.Debug()
 
 	return &SqlHandler{conn: db}
 }

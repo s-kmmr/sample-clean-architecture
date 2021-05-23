@@ -32,6 +32,7 @@ func (i *Injector) newMemberController() controllers.MemberController {
 func (i *Injector) newMemberUseCase() usecases.MemberUseCase {
 	u := usecases.NewMemberUseCase(
 		i.newMemberRepository(),
+		i.newTxRepository(),
 	)
 	return u
 }
@@ -41,6 +42,14 @@ func (i *Injector) newMemberRepository() repository.MemberRepository {
 	m := pd.NewMemberHandler(i.newFwSqlHandler())
 	// gateways
 	r := database.NewMemberRepository(m)
+	return r
+}
+
+func (i *Injector) newTxRepository() repository.TransactionRepository {
+	// frameworks
+	tr := pd.NewTransactionHandler(i.newFwSqlHandler())
+	// gateways
+	r := database.NewTransactionRepository(tr)
 	return r
 }
 

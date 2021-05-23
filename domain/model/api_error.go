@@ -11,6 +11,7 @@ const (
 	Unknown ErrCode = iota
 	ConnectionFailed
 	MemberNotFound
+	FailCreateMember
 )
 
 func NewApiError(_code uint, _err error) *ApiError {

@@ -1,6 +1,9 @@
 package database
 
 import (
+	"context"
+
+	"github.com/s-kmmr/sample-clean-architecture/domain/model"
 	"github.com/s-kmmr/sample-clean-architecture/infrastructure/client"
 	ie "github.com/s-kmmr/sample-clean-architecture/infrastructure/persistence/entity"
 	"github.com/s-kmmr/sample-clean-architecture/interfaces/gateway/database"
@@ -16,9 +19,9 @@ func NewMemberHandler(s *client.SqlHandler) database.MemberHandler {
 	return &memberHandler{conn: s}
 }
 
-func (u *memberHandler) FindAll() (ge.MemberEntitys, error) {
+func (m *memberHandler) FindAll() (ge.MemberEntitys, error) {
 	e := ie.MemberEntitys{}
-	if err := u.conn.Conn().Find(&e).Error; err != nil {
+	if err := m.conn.Conn().Find(&e).Error; err != nil {
 		return nil, err
 	}
 
@@ -27,4 +30,17 @@ func (u *memberHandler) FindAll() (ge.MemberEntitys, error) {
 	}
 
 	return e.MakeMembers(), nil
+}
+
+func (m *memberHandler) Create(ctx context.Context, member model.Member) error {
+	tx, err := transaction(ctx)
+	if err != nil {
+		return xerrors.Errorf("failed to do transaction(): %w", err)
+	}
+
+	me := ie.NewMember(member)
+	if err := tx.Create(&me).Error; err != nil {
+		return xerrors.Errorf("failed to do xt.Create(): %w", err)
+	}
+	return nil
 }

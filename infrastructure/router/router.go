@@ -15,8 +15,14 @@ func NewRouter(i injector.Injector) *Router {
 	r := gin.Default()
 
 	v1 := r.Group("v1")
+	// メンバー一覧の取得
 	v1.GET("/members", func(c *gin.Context) {
 		i.MemberController().MemberList(c.Request.Context(), c)
+	})
+
+	// 新規メンバーの作成
+	v1.POST("/members", func(c *gin.Context) {
+		i.MemberController().CreateMember(c.Request.Context(), c)
 	})
 
 	// swagger setting

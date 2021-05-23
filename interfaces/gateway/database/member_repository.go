@@ -1,6 +1,8 @@
 package database
 
 import (
+	"context"
+
 	"github.com/s-kmmr/sample-clean-architecture/domain/model"
 	"github.com/s-kmmr/sample-clean-architecture/domain/repository"
 	"golang.org/x/xerrors"
@@ -23,4 +25,11 @@ func (m *memberRepository) FindAll() ([]model.Member, error) {
 		return nil, xerrors.Errorf("failed to FindAll(): %w", err)
 	}
 	return rec.MakeMembers(), nil
+}
+
+func (m *memberRepository) Create(ctx context.Context, member model.Member) error {
+	if err := m.h.Create(ctx, member); err != nil {
+		return model.NewApiError(uint(model.FailCreateMember), xerrors.Errorf("failed to Create() in gateway: %w", err))
+	}
+	return nil
 }

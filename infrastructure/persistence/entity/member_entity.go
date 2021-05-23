@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"github.com/s-kmmr/sample-clean-architecture/domain/model"
 	ge "github.com/s-kmmr/sample-clean-architecture/interfaces/gateway/database/entity"
 )
 
@@ -12,6 +13,13 @@ type MemberEntitys []MemberEntity
 
 func (e *MemberEntity) TableName() string {
 	return "member"
+}
+
+func NewMember(m model.Member) MemberEntity {
+	return MemberEntity{
+		LastName:  m.LastName(),
+		FirstName: m.FirstName(),
+	}
 }
 
 func (e *MemberEntitys) MakeMembers() []ge.MemberEntity {
