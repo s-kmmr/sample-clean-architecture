@@ -40,7 +40,7 @@ func (m *memberHandler) Create(ctx context.Context, member model.Member) error {
 
 	me := ie.NewMember(member)
 	if err := tx.Create(&me).Error; err != nil {
-		return xerrors.Errorf("failed to do xt.Create(): %w", err)
+		return xerrors.Errorf("failed to do tx.Create(): %w", err)
 	}
 	return nil
 }

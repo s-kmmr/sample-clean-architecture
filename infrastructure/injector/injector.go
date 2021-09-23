@@ -10,11 +10,13 @@ import (
 )
 
 type Injector struct {
+	clientGroups     clientGroups
 	memberController controllers.MemberController
 }
 
 func NewInjector() Injector {
 	i := Injector{}
+	i.clientGroups = i.newClientGroups()
 	i.memberController = i.newMemberController()
 	return i
 }
@@ -39,7 +41,7 @@ func (i *Injector) newMemberUseCase() usecases.MemberUseCase {
 
 func (i *Injector) newMemberRepository() repository.MemberRepository {
 	// frameworks
-	m := pd.NewMemberHandler(i.newFwSqlHandler())
+	m := pd.NewMemberHandler(i.clientGroups.sqlcln)
 	// gateways
 	r := database.NewMemberRepository(m)
 	return r
@@ -47,10 +49,20 @@ func (i *Injector) newMemberRepository() repository.MemberRepository {
 
 func (i *Injector) newTxRepository() repository.TransactionRepository {
 	// frameworks
-	tr := pd.NewTransactionHandler(i.newFwSqlHandler())
+	tr := pd.NewTransactionHandler(i.clientGroups.sqlcln)
 	// gateways
 	r := database.NewTransactionRepository(tr)
 	return r
+}
+
+type clientGroups struct {
+	sqlcln *client.SqlHandler
+}
+
+func (i *Injector) newClientGroups() clientGroups {
+	return clientGroups{
+		sqlcln: i.newFwSqlHandler(),
+	}
 }
 
 // frameworks

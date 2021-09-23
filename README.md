@@ -17,6 +17,9 @@ go run main.go
 
 ※ginでサーバが起動します
 
+[OpenAPI]
+swaggerを使用しています
+http://localhost:8080/swagger/index.html
 
 ```
 
