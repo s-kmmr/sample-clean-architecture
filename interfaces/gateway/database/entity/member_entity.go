@@ -12,6 +12,10 @@ func NewMemberEntity(ln string, fn string) MemberEntity {
 	return MemberEntity{lastName: ln, firstName: fn}
 }
 
+func (m *MemberEntity) MakeMember() model.Member {
+	return model.NewMember(m.lastName, m.firstName)
+}
+
 func (m *MemberEntitys) MakeMembers() []model.Member {
 	if len(*m) < 1 {
 		return nil

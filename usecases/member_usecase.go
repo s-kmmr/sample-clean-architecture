@@ -5,6 +5,7 @@ import (
 
 	"github.com/s-kmmr/sample-clean-architecture/domain/model"
 	"github.com/s-kmmr/sample-clean-architecture/domain/repository"
+	"github.com/s-kmmr/sample-clean-architecture/domain/service/member"
 	"golang.org/x/xerrors"
 )
 
@@ -16,12 +17,14 @@ type MemberUseCase interface {
 type memberUseCase struct {
 	mr repository.MemberRepository
 	tr repository.TransactionRepository
+	mv member.MemberNameValidator
 }
 
-func NewMemberUseCase(_mr repository.MemberRepository, _tr repository.TransactionRepository) MemberUseCase {
+func NewMemberUseCase(_mr repository.MemberRepository, _tr repository.TransactionRepository, _mv member.MemberNameValidator) MemberUseCase {
 	return &memberUseCase{
 		mr: _mr,
 		tr: _tr,
+		mv: _mv,
 	}
 }
 
@@ -34,6 +37,9 @@ func (m *memberUseCase) Members(ctx context.Context) ([]model.Member, error) {
 }
 
 func (m *memberUseCase) Create(ctx context.Context, member model.Member) error {
+	if err := m.mv.ValidateDuplicatedName(ctx, member.LastName(), member.FirstName()); err != nil {
+		return xerrors.Errorf("failed to MemberNameValidator.ValidateDuplicatedName(): %w", err)
+	}
 	err := m.tr.DoWithTx(ctx, func(ctx context.Context) error {
 		if err := m.mr.Create(ctx, member); err != nil {
 			return xerrors.Errorf("failed to Create() in transaction: %w", err)

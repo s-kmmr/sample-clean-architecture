@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/s-kmmr/sample-clean-architecture/domain/model"
 	"github.com/s-kmmr/sample-clean-architecture/infrastructure/client"
@@ -9,6 +10,7 @@ import (
 	"github.com/s-kmmr/sample-clean-architecture/interfaces/gateway/database"
 	ge "github.com/s-kmmr/sample-clean-architecture/interfaces/gateway/database/entity"
 	"golang.org/x/xerrors"
+	"gorm.io/gorm"
 )
 
 type memberHandler struct {
@@ -30,6 +32,20 @@ func (m *memberHandler) FindAll() (ge.MemberEntitys, error) {
 	}
 
 	return e.MakeMembers(), nil
+}
+
+func (m *memberHandler) FindByLastFirstName(ctx context.Context, lastName string, firstName string) (*ge.MemberEntity, error) {
+	e := ie.MemberEntity{}
+
+	err := m.conn.Conn().Where("last_name = @ln AND first_name = @fn", sql.Named("ln", lastName), sql.Named("fn", firstName)).First(&e).Error
+	if xerrors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, xerrors.Errorf("select error. : %w", err)
+	}
+	gm := e.MakeMember()
+	return &gm, nil
 }
 
 func (m *memberHandler) Create(ctx context.Context, member model.Member) error {

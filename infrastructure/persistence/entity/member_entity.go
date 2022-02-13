@@ -22,6 +22,10 @@ func NewMember(m model.Member) MemberEntity {
 	}
 }
 
+func (e *MemberEntity) MakeMember() ge.MemberEntity {
+	return ge.NewMemberEntity(e.LastName, e.FirstName)
+}
+
 func (e *MemberEntitys) MakeMembers() []ge.MemberEntity {
 	if len(*e) < 1 {
 		return nil

@@ -16,11 +16,3 @@ func (m Member) LastName() string {
 func (m Member) FirstName() string {
 	return m.firstName
 }
-
-// func (m *Member) SetLastName(_lastName string) {
-// 	m.lastName = _lastName
-// }
-
-// func (m *Member) SetFirstName(_firstName string) {
-// 	m.firstName = _firstName
-// }

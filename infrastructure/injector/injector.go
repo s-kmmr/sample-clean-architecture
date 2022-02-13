@@ -2,6 +2,7 @@ package injector
 
 import (
 	"github.com/s-kmmr/sample-clean-architecture/domain/repository"
+	"github.com/s-kmmr/sample-clean-architecture/domain/service/member"
 	"github.com/s-kmmr/sample-clean-architecture/infrastructure/client"
 	pd "github.com/s-kmmr/sample-clean-architecture/infrastructure/persistence/database"
 	"github.com/s-kmmr/sample-clean-architecture/interfaces/controllers"
@@ -32,9 +33,11 @@ func (i *Injector) newMemberController() controllers.MemberController {
 }
 
 func (i *Injector) newMemberUseCase() usecases.MemberUseCase {
+	memberRepository := i.newMemberRepository()
 	u := usecases.NewMemberUseCase(
-		i.newMemberRepository(),
+		memberRepository,
 		i.newTxRepository(),
+		i.newMemberNameValidator(memberRepository),
 	)
 	return u
 }
@@ -53,6 +56,10 @@ func (i *Injector) newTxRepository() repository.TransactionRepository {
 	// gateways
 	r := database.NewTransactionRepository(tr)
 	return r
+}
+
+func (i *Injector) newMemberNameValidator(mr repository.MemberRepository) member.MemberNameValidator {
+	return member.NewNameValidator(mr)
 }
 
 type clientGroups struct {
