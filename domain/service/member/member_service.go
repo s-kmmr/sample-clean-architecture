@@ -15,7 +15,7 @@ type memberNameValidator struct {
 	memberRepository repository.MemberRepository
 }
 
-func NewNameValidator(_mr repository.MemberRepository) MemberNameValidator {
+func NewMemberNameValidator(_mr repository.MemberRepository) MemberNameValidator {
 	return &memberNameValidator{
 		memberRepository: _mr,
 	}
@@ -24,7 +24,7 @@ func NewNameValidator(_mr repository.MemberRepository) MemberNameValidator {
 func (v *memberNameValidator) ValidateDuplicatedName(ctx context.Context, lastName string, firstName string) error {
 	mem, err := v.memberRepository.FindByLastFirstName(ctx, lastName, firstName)
 	if err != nil {
-		return xerrors.Errorf("failed to memberRepository.FindByName(): %w", err)
+		return xerrors.Errorf("failed to memberRepository.FindByLastFirstName(): %w", err)
 	}
 	if mem != nil {
 		return xerrors.Errorf("lastName(%s) and firstName(%s) is duplicated", lastName, firstName)

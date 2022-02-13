@@ -59,7 +59,7 @@ func (i *Injector) newTxRepository() repository.TransactionRepository {
 }
 
 func (i *Injector) newMemberNameValidator(mr repository.MemberRepository) member.MemberNameValidator {
-	return member.NewNameValidator(mr)
+	return member.NewMemberNameValidator(mr)
 }
 
 type clientGroups struct {
