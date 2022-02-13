@@ -47,6 +47,7 @@ http://localhost:8080/swagger/index.html
 ### - Enterprise Business Rules
 - domain/
   - model
+  - service
 
 
 
